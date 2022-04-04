@@ -1060,7 +1060,7 @@ CAMLprim value ocaml_ssl_read_certificate(value vfilename)
 CAMLprim value ocaml_ssl_write_certificate(value vfilename, value certificate)
 {
   CAMLparam2(vfilename, certificate);
-  char *filename = String_val(vfilename);
+  char *filename = (char *)String_val(vfilename);
   X509 *cert = Cert_val(certificate);
   FILE *fh = NULL;
   char buf[256];
@@ -1152,7 +1152,7 @@ CAMLprim value ocaml_ssl_get_start_date(value certificate)
   struct tm t;
 
   caml_enter_blocking_section();
-  ASN1_TIME_to_tm(X509_get0_notBefore(cert), &t);
+  ASN1_TIME_to_tm(X509_get_notBefore(cert), &t);
   caml_leave_blocking_section();
 
   CAMLreturn(alloc_tm(&t));
