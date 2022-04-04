@@ -1176,7 +1176,7 @@ CAMLprim value ocaml_ssl_ctx_load_verify_locations(value context, value ca_file,
   CAMLparam3(context, ca_file, ca_path);
   SSL_CTX *ctx = Ctx_val(context);
   char *CAfile = String_val(ca_file);
-  char *CApath = String_val(ca_path);
+  char *CApath = (char *)String_val(ca_path);
 
   if(*CAfile == 0)
     CAfile = NULL;
@@ -1259,7 +1259,7 @@ CAMLprim value ocaml_ssl_set_client_SNI_hostname(value socket, value vhostname)
 {
   CAMLparam2(socket, vhostname);
   SSL *ssl       = SSL_val(socket);
-  char *hostname = String_val(vhostname);
+  char *hostname = (char *)String_val(vhostname);
 
   caml_enter_blocking_section();
   SSL_set_tlsext_host_name(ssl, hostname);
