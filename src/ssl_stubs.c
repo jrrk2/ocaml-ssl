@@ -1033,7 +1033,7 @@ static struct custom_operations cert_ops =
 CAMLprim value ocaml_ssl_read_certificate(value vfilename)
 {
   value block;
-  char *filename = String_val(vfilename);
+  char *filename = (char *)String_val(vfilename);
   X509 *cert = NULL;
   FILE *fh = NULL;
   char buf[256];
@@ -1152,7 +1152,7 @@ CAMLprim value ocaml_ssl_get_start_date(value certificate)
   struct tm t;
 
   caml_enter_blocking_section();
-  ASN1_TIME_to_tm(X509_get_notBefore(cert), &t);
+  ASN1_TIME_set(X509_get_notBefore(cert), &t);
   caml_leave_blocking_section();
 
   CAMLreturn(alloc_tm(&t));
@@ -1165,7 +1165,7 @@ CAMLprim value ocaml_ssl_get_expiration_date(value certificate)
   struct tm t;
 
   caml_enter_blocking_section();
-  ASN1_TIME_to_tm(X509_get_notAfter(cert), &t);
+  ASN1_TIME_set(X509_get_notAfter(cert), &t);
   caml_leave_blocking_section();
 
   CAMLreturn(alloc_tm(&t));
