@@ -1165,7 +1165,7 @@ CAMLprim value ocaml_ssl_get_expiration_date(value certificate)
   struct tm t;
 
   caml_enter_blocking_section();
-  ASN1_TIME_to_tm(X509_get0_notAfter(cert), &t);
+  ASN1_TIME_to_tm(X509_get_notAfter(cert), &t);
   caml_leave_blocking_section();
 
   CAMLreturn(alloc_tm(&t));
@@ -1175,7 +1175,7 @@ CAMLprim value ocaml_ssl_ctx_load_verify_locations(value context, value ca_file,
 {
   CAMLparam3(context, ca_file, ca_path);
   SSL_CTX *ctx = Ctx_val(context);
-  char *CAfile = String_val(ca_file);
+  char *CAfile = (char *)String_val(ca_file);
   char *CApath = (char *)String_val(ca_path);
 
   if(*CAfile == 0)
