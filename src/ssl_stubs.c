@@ -943,7 +943,7 @@ CAMLprim value ocaml_ssl_ctx_init_dh_from_file(value context, value dh_file_path
   CAMLparam2(context, dh_file_path);
   DH *dh = NULL;
   SSL_CTX *ctx = Ctx_val(context);
-  char *dh_cfile_path = String_val(dh_file_path);
+  char *dh_cfile_path = (char *)String_val(dh_file_path);
 
   if(*dh_cfile_path == 0)
     caml_raise_constant(*caml_named_value("ssl_exn_diffie_hellman_error"));
@@ -973,7 +973,7 @@ CAMLprim value ocaml_ssl_ctx_init_ec_from_named_curve(value context, value curve
   EC_KEY *ecdh = NULL;
   int nid = 0;
   SSL_CTX *ctx = Ctx_val(context);
-  char *ec_curve_name = String_val(curve_name);
+  char *ec_curve_name = (char *)String_val(curve_name);
 
   if(*ec_curve_name == 0)
     caml_raise_constant(*caml_named_value("ssl_exn_ec_curve_error"));
