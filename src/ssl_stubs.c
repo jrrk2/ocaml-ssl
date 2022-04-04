@@ -821,7 +821,7 @@ CAMLprim value ocaml_ssl_ctx_set_cipher_list(value context, value ciphers_string
 {
   CAMLparam2(context, ciphers_string);
   SSL_CTX *ctx = Ctx_val(context);
-  char *ciphers = String_val(ciphers_string);
+  char *ciphers = (char *)String_val(ciphers_string);
 
   if(*ciphers == 0)
     caml_raise_constant(*caml_named_value("ssl_exn_cipher_error"));
@@ -875,10 +875,6 @@ CAMLprim value ocaml_ssl_version(value socket)
 
     case TLS1_2_VERSION:
       ret = 4;
-      break;
-
-    case TLS1_3_VERSION:
-      ret = 5;
       break;
 
     default:
